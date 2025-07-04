@@ -134,7 +134,7 @@ calcMahjongPoint winnerTypes winnerPoints winnerRoles =
                3 -> mangan_Oya
                4 -> mangan_Oya
                _ -> 0
-              
+
     else -- Ko
       
       if mahjongRoles >= 13 then yakuman_Ko --Yakuman
@@ -143,8 +143,3 @@ calcMahjongPoint winnerTypes winnerPoints winnerRoles =
              else if 5 < mahjongRoles && mahjongRoles < 8 then haneman_Ko -- Haneman
       
       else mangan_Ko -- Mangan
-      
-      
-
-        
-    
