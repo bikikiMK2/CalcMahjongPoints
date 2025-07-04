@@ -1,10 +1,10 @@
 module Main (main) where
 
 main :: IO ()
-main = print (calcMahjongPoint True 30 5)
+main = print (calcMahjongGamePoint True 30 5)
 
-calcMahjongPoint :: Bool -> Int -> Int -> Int -- UserType(oya or ko), Points(fu), Roles(yaku) -> GamePoints
-calcMahjongPoint winnerTypes winnerPoints winnerRoles = 
+calcMahjongGamePoint :: Bool -> Int -> Int -> Int -- UserType(Oya or Ko), Points(Fu), Roles(Yaku) -> GamePoints
+calcMahjongGamePoint winnerTypes winnerPoints winnerRoles = 
 
   let
     mahjongType = winnerTypes :: Bool -- True is Oya, False is Ko
@@ -143,3 +143,4 @@ calcMahjongPoint winnerTypes winnerPoints winnerRoles =
              else if 5 < mahjongRoles && mahjongRoles < 8 then haneman_Ko -- Haneman
       
       else mangan_Ko -- Mangan
+      
