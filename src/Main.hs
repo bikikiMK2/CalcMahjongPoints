@@ -1,7 +1,7 @@
 module Main (main) where
 
 main :: IO ()
-main = print (calcMahjongPoint True 30 2)
+main = print (calcMahjongPoint True 30 5)
 
 calcMahjongPoint :: Bool -> Int -> Int -> Int -- UserType(oya or ko), Points(fu), Roles(yaku) -> GamePoints
 calcMahjongPoint winnerTypes winnerPoints winnerRoles = 
@@ -25,6 +25,16 @@ calcMahjongPoint winnerTypes winnerPoints winnerRoles =
   in
 
     if mahjongType == True then -- Oya
+
+      if mahjongRoles >= 5 then 
+
+        if mahjongRoles >= 13 then yakuman_Oya --Yakuman
+               else if 10 < mahjongRoles && mahjongRoles < 13 then sanbaiman_Oya -- Sanbaiman
+                 else if 7 < mahjongRoles && mahjongRoles < 11 then baiman_Oya -- Baiman
+                   else if 5 < mahjongRoles && mahjongRoles < 8 then haneman_Oya -- Haneman
+                     else mangan_Oya -- Mangan 
+
+      else -- mahjongRoles < 5
 
         if mahjongPoints == 20 then
 
@@ -116,7 +126,7 @@ calcMahjongPoint winnerTypes winnerPoints winnerRoles =
                4 -> mangan_Oya
                _ -> 0
         
-          else if mahjongPoints == 110 then 
+          else --  if mahjongPoints == 110 then
 
              case mahjongRoles of 
                1 -> 5300
@@ -124,15 +134,7 @@ calcMahjongPoint winnerTypes winnerPoints winnerRoles =
                3 -> mangan_Oya
                4 -> mangan_Oya
                _ -> 0
-          
-          else 
-            
-            if mahjongRoles >= 13 then yakuman_Oya --Yakuman
-               else if 10 < mahjongRoles && mahjongRoles < 13 then sanbaiman_Oya -- Sanbaiman
-                 else if 7 < mahjongRoles && mahjongRoles < 11 then baiman_Oya -- Baiman
-                   else if 5 < mahjongRoles && mahjongRoles < 8 then haneman_Oya -- Haneman
-                     else mangan_Oya -- Mangan 
-        
+              
     else -- Ko
       
       if mahjongRoles >= 13 then yakuman_Ko --Yakuman
