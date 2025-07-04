@@ -28,12 +28,12 @@ calcMahjongPoint winnerTypes winnerPoints winnerRoles =
 
         if mahjongPoints == 20 then
 
-          case mahjongRoles of 
-            1 -> 0
-            2 -> 700
-            3 -> 1300
-            4 -> 2600
-            _ -> 0
+             case mahjongRoles of 
+               1 -> 0
+               2 -> 700
+               3 -> 1300
+               4 -> 2600
+               _ -> 0
         
           else if mahjongPoints == 25 then
 
