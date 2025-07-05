@@ -1,10 +1,10 @@
 cabal-version:       2.2
 
-name:                CalcMahjongPoints
+name:                CalcMahjongGamePoints
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/bikikiMK2/CalcMahjongPoints#readme
+homepage:            https://github.com/bikikiMK2/CalcMahjongGamePoints#readme
 license:             MIT
 license-file:        LICENSE
 author:              Hibiki Kawashima
