@@ -1,247 +1,223 @@
 module Main (main) where
 
+data MahjongType = Oya | Ko deriving Eq
+
+data ScoreRank = Mangan | Haneman | Baiman | Sanbaiman | Yakuman deriving Eq
+
+type MahjongPoint = Int
+
+type MahjongRole = Int
+
+scoreRank :: MahjongType -> ScoreRank -> Int
+scoreRank Oya Mangan    = 12000
+scoreRank Oya Haneman   = 18000
+scoreRank Oya Baiman    = 24000
+scoreRank Oya Sanbaiman = 36000
+scoreRank Oya Yakuman   = 48000
+
+scoreRank Ko Mangan     = 8000
+scoreRank Ko Haneman    = 12000
+scoreRank Ko Baiman     = 16000
+scoreRank Ko Sanbaiman  = 24000
+scoreRank Ko Yakuman    = 32000
+
 main :: IO ()
-main = print (calcMahjongGamePoint True 30 13)
+main = print (calcMahjongGamePoint Oya 30 13)
 
-calcMahjongGamePoint :: Bool -> Int -> Int -> Int -- UserType(Oya or Ko), Points(Fu), Roles(Yaku) -> GamePoints
-calcMahjongGamePoint winnerTypes winnerPoints winnerRoles = 
+calcMahjongGamePoint :: MahjongType -> MahjongPoint -> MahjongRole -> Int
 
-  let
-    mahjongType = winnerTypes :: Bool -- True is Oya, False is Ko
-    mahjongRoles = winnerRoles :: Int -- Roles are the count of Yaku
-    mahjongPoints = winnerPoints :: Int -- Points are the count of Fu
+calcMahjongGamePoint mahjongType _ mahjongRoles | mahjongRoles >= 5 =
+  scoreRank mahjongType calculateScoreRank
+  where
+    calculateScoreRank
+      | mahjongRoles >= 13                     = Yakuman
+      | 10 < mahjongRoles && mahjongRoles < 13 = Sanbaiman
+      | 7  < mahjongRoles && mahjongRoles < 11 = Baiman
+      | 5  < mahjongRoles && mahjongRoles < 8  = Haneman
+      | otherwise                              = Mangan
 
-    mangan_Oya = 12000 :: Int
-    haneman_Oya = 18000 :: Int
-    baiman_Oya = 24000 :: Int 
-    sanbaiman_Oya = 36000 :: Int
-    yakuman_Oya = 48000 :: Int 
+calcMahjongGamePoint Oya mahjongPoints mahjongRoles =
+  case mahjongPoints of
+    20 ->
+      case mahjongRoles of
+        1 -> error "impossible"
+        2 -> 2100
+        3 -> 3900
+        4 -> 7800
+        _ -> error "impossible"
 
-    mangan_Ko = 8000 :: Int
-    haneman_Ko = 12000 :: Int
-    baiman_Ko = 16000 :: Int
-    sanbaiman_Ko = 24000 :: Int
-    yakuman_Ko = 32000 :: Int
-  in
+    25 ->
+      case mahjongRoles of
+        1 -> error "impossible"
+        2 -> 2400
+        3 -> 4800
+        4 -> 9600
+        _ -> error "impossible"
 
-    if mahjongType == True then -- Oya
+    30 ->
+      case mahjongRoles of
+        1 -> 1500
+        2 -> 2900
+        3 -> 5800
+        4 -> 11600
+        _ -> error "impossible"
 
-      if mahjongRoles >= 5 then 
+    40 ->
+      case mahjongRoles of
+        1 -> 2000
+        2 -> 3900
+        3 -> 7700
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-        if mahjongRoles >= 13 then yakuman_Oya --Yakuman
-               else if 10 < mahjongRoles && mahjongRoles < 13 then sanbaiman_Oya -- Sanbaiman
-                 else if 7 < mahjongRoles && mahjongRoles < 11 then baiman_Oya -- Baiman
-                   else if 5 < mahjongRoles && mahjongRoles < 8 then haneman_Oya -- Haneman
-        else mangan_Oya -- Mangan 
+    50 ->
+      case mahjongRoles of
+        1 -> 2400
+        2 -> 4800
+        3 -> 9600
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-      else -- mahjongRoles < 5
+    60 ->
+      case mahjongRoles of
+        1 -> 2900
+        2 -> 5800
+        3 -> 11600
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-        if mahjongPoints == 20 then
+    70 ->
+      case mahjongRoles of
+        1 -> 3400
+        2 -> 6800
+        3 -> scoreRank Oya Mangan
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 0
-               2 -> 700
-               3 -> 1300
-               4 -> 2600
-               _ -> 0
-        
-          else if mahjongPoints == 25 then
+    80 ->
+      case mahjongRoles of
+        1 -> 3900
+        2 -> 7700
+        3 -> scoreRank Oya Mangan
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 0
-               2 -> 800
-               3 -> 1600
-               4 -> 3200
-               _ -> 0
-        
-          else if mahjongPoints == 30 then
+    90 ->
+      case mahjongRoles of
+        1 -> 4400
+        2 -> 8700
+        3 -> scoreRank Oya Mangan
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 1500
-               2 -> 2900
-               3 -> 5800
-               4 -> 11600
-               _ -> 0
-        
-          else if mahjongPoints == 40 then
+    100 ->
+      case mahjongRoles of
+        1 -> 4800
+        2 -> 9600
+        3 -> scoreRank Oya Mangan
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 2000
-               2 -> 3900
-               3 -> 7700
-               4 -> mangan_Oya
-               _ -> 0
-        
-          else if mahjongPoints == 50 then
+    110 ->
+      case mahjongRoles of
+        1 -> 5300
+        2 -> 10600
+        3 -> scoreRank Oya Mangan
+        4 -> scoreRank Oya Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 2400
-               2 -> 4800
-               3 -> 9600
-               4 -> mangan_Oya
-               _ -> 0
-        
-          else if mahjongPoints == 60 then
+    x ->
+      error (show x <> " is not a valid MahjongPoint!")
 
-             case mahjongRoles of 
-               1 -> 2900
-               2 -> 5800
-               3 -> 9600
-               4 -> mangan_Oya
-               _ -> 0
-        
-          else if mahjongPoints == 70 then
+calcMahjongGamePoint Ko mahjongPoints mahjongRoles =
+  case mahjongPoints of
+    20 ->
+      case mahjongRoles of
+        1 -> error "impossible"
+        2 -> 1500
+        3 -> 2700
+        4 -> 5200
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 3400
-               2 -> 6800
-               3 -> mangan_Oya
-               4 -> mangan_Oya
-               _ -> 0
-        
-          else if mahjongPoints == 80 then
+    25 ->
+      case mahjongRoles of
+        1 -> error "impossible"
+        2 -> 1600
+        3 -> 3200
+        4 -> 6400
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 3900
-               2 -> 7700
-               3 -> mangan_Oya
-               4 -> mangan_Oya
-               _ -> 0
-        
-          else if mahjongPoints == 90 then
+    30 ->
+      case mahjongRoles of
+        1 -> 1000
+        2 -> 2000
+        3 -> 3900
+        4 -> 7700
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 4400
-               2 -> 8700
-               3 -> mangan_Oya
-               4 -> mangan_Oya
-               _ -> 0
-        
-          else if mahjongPoints == 100 then
+    40 ->
+      case mahjongRoles of
+        1 -> 1300
+        2 -> 2600
+        3 -> 5200
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 4800
-               2 -> 9600
-               3 -> mangan_Oya
-               4 -> mangan_Oya
-               _ -> 0
-        
-          else --  if mahjongPoints == 110 then
+    50 ->
+      case mahjongRoles of
+        1 -> 1600
+        2 -> 3200
+        3 -> 6400
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 5300
-               2 -> 10600
-               3 -> mangan_Oya
-               4 -> mangan_Oya
-               _ -> 0
+    60 ->
+      case mahjongRoles of
+        1 -> 2000
+        2 -> 3900
+        3 -> 7700
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-    else -- Ko
-      
-      if mahjongRoles >= 5 then
+    70 ->
+      case mahjongRoles of
+        1 -> 2300
+        2 -> 4500
+        3 -> scoreRank Ko Mangan
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-        if mahjongRoles >= 13 then yakuman_Ko -- Yakuman
-         else if 10 < mahjongRoles && mahjongRoles < 13 then sanbaiman_Ko -- Sanbaiman
-           else if 7 < mahjongRoles && mahjongRoles < 11 then baiman_Ko -- Baiman
-             else if 5 < mahjongRoles && mahjongRoles < 8 then haneman_Ko -- Haneman
-        else mangan_Ko -- Mangan
-      
-      else -- mahjongRoles < 5 
-        
-         if mahjongPoints == 20 then
+    80 ->
+      case mahjongRoles of
+        1 -> 2600
+        2 -> 5200
+        3 -> scoreRank Ko Mangan
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 0
-               2 -> 700
-               3 -> 1300
-               4 -> 2600
-               _ -> 0
-        
-          else if mahjongPoints == 25 then
+    90 ->
+      case mahjongRoles of
+        1 -> 2900
+        2 -> 5800
+        3 -> scoreRank Ko Mangan
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 0
-               2 -> 800
-               3 -> 1600
-               4 -> 3200
-               _ -> 0
-        
-          else if mahjongPoints == 30 then
+    100 ->
+      case mahjongRoles of
+        1 -> 3200
+        2 -> 6400
+        3 -> scoreRank Ko Mangan
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 1500
-               2 -> 2900
-               3 -> 5800
-               4 -> 11600
-               _ -> 0
-        
-          else if mahjongPoints == 40 then
+    110 ->
+      case mahjongRoles of
+        1 -> 3600
+        2 -> 7100
+        3 -> scoreRank Ko Mangan
+        4 -> scoreRank Ko Mangan
+        _ -> error "impossible"
 
-             case mahjongRoles of 
-               1 -> 2000
-               2 -> 3900
-               3 -> 7700
-               4 -> mangan_Ko
-               _ -> 0
-        
-          else if mahjongPoints == 50 then
-
-             case mahjongRoles of 
-               1 -> 2400
-               2 -> 4800
-               3 -> 9600
-               4 -> mangan_Ko
-               _ -> 0
-        
-          else if mahjongPoints == 60 then
-
-             case mahjongRoles of 
-               1 -> 2900
-               2 -> 5800
-               3 -> 9600
-               4 -> mangan_Ko
-               _ -> 0
-        
-          else if mahjongPoints == 70 then
-
-             case mahjongRoles of 
-               1 -> 3400
-               2 -> 6800
-               3 -> mangan_Ko
-               4 -> mangan_Ko
-               _ -> 0
-        
-          else if mahjongPoints == 80 then
-
-             case mahjongRoles of 
-               1 -> 3900
-               2 -> 7700
-               3 -> mangan_Ko
-               4 -> mangan_Ko
-               _ -> 0
-        
-          else if mahjongPoints == 90 then
-
-             case mahjongRoles of 
-               1 -> 4400
-               2 -> 8700
-               3 -> mangan_Ko
-               4 -> mangan_Ko
-               _ -> 0
-        
-          else if mahjongPoints == 100 then
-
-             case mahjongRoles of 
-               1 -> 4800
-               2 -> 9600
-               3 -> mangan_Ko
-               4 -> mangan_Ko
-               _ -> 0
-        
-          else --  if mahjongPoints == 110 then
-
-             case mahjongRoles of 
-               1 -> 5300
-               2 -> 10600
-               3 -> mangan_Ko
-               4 -> mangan_Ko
-               _ -> 0
+    x ->
+      error (show x <> " is not a valid MahjongPoint!")
