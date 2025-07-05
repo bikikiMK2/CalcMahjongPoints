@@ -1,1 +1,1 @@
-# CalcMahjongPoints
+# CalcMahjongGamePoints
